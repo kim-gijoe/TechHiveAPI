@@ -1,0 +1,156 @@
+### -------------------------
+### GET all users (empty list)
+### -------------------------
+GET http://localhost:5025/users
+Accept: application/json
+Authorization: Bearer mysecrettoken
+
+
+### -------------------------
+### POST valid user
+### -------------------------
+POST http://localhost:5025/users
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "Alice",
+  "age": 30
+}
+
+
+### -------------------------
+### POST invalid user (empty name)
+### Expect: 400 Bad Request
+### -------------------------
+POST http://localhost:5025/users
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "",
+  "age": 25
+}
+
+
+### -------------------------
+### POST invalid user (age <= 0)
+### Expect: 400 Bad Request
+### -------------------------
+POST http://localhost:5025/users
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "Bob",
+  "age": 0
+}
+
+
+### -------------------------
+### GET user by ID (existing)
+### -------------------------
+GET http://localhost:5025/users/1
+Accept: application/json
+Authorization: Bearer mysecrettoken
+
+
+### -------------------------
+### GET user by ID (non-existent)
+### Expect: 404 Not Found
+### -------------------------
+GET http://localhost:5025/users/999
+Accept: application/json
+Authorization: Bearer mysecrettoken
+
+
+### -------------------------
+### PUT update user (valid)
+### -------------------------
+PUT http://localhost:5025/users/1
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "Alice Updated",
+  "age": 31
+}
+
+
+### -------------------------
+### PUT update user (invalid name)
+### Expect: 400 Bad Request
+### -------------------------
+PUT http://localhost:5025/users/1
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "",
+  "age": 31
+}
+
+
+### -------------------------
+### PUT update user (non-existent)
+### Expect: 404 Not Found
+### -------------------------
+PUT http://localhost:5025/users/999
+Content-Type: application/json
+Authorization: Bearer mysecrettoken
+
+{
+  "userName": "Ghost",
+  "age": 50
+}
+
+
+### -------------------------
+### DELETE user (existing)
+### -------------------------
+DELETE http://localhost:5025/users/1
+Authorization: Bearer mysecrettoken
+
+
+### -------------------------
+### DELETE user (non-existent)
+### Expect: 404 Not Found
+### -------------------------
+DELETE http://localhost:5025/users/999
+Authorization: Bearer mysecrettoken
+
+
+### -------------------------
+### GET users with pagination
+### -------------------------
+GET http://localhost:5025/users?skip=0&take=2
+Accept: application/json
+Authorization: Bearer mysecrettoken
+
+
+### ============================
+### MIDDLEWARE TESTS
+### ============================
+
+### 1) Missing token → Expect 401 Unauthorized
+GET http://localhost:5025/users
+Accept: application/json
+
+
+### 2) Invalid token → Expect 401 Unauthorized
+GET http://localhost:5025/users
+Authorization: Bearer wrongtoken
+Accept: application/json
+
+
+### 3) Valid token → Expect 200 OK (or whatever your endpoint returns)
+GET http://localhost:5025/users
+Authorization: Bearer mysecrettoken
+Accept: application/json
+
+
+### 4) Trigger exception → Expect 500 Internal Server Error (error-handling middleware)
+GET http://localhost:5025/users/throw
+Authorization: Bearer mysecrettoken
+Accept: application/json
+
