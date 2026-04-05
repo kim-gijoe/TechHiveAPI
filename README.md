@@ -1,6 +1,7 @@
 # UserManagementAPI
 
-A lightweight ASP.NET Core Minimal API for managing users, built as the final project for the **Back-End Development with .NET** Coursera course.  
+A lightweight ASP.NET Core Minimal API for managing users, built as the final project for the **Back-End Development with .NET** Coursera course.
+
 The project demonstrates core back-end development skills including API design, validation, middleware implementation, authentication, logging, and error handling.
 
 ---
@@ -84,11 +85,10 @@ Use the included `.http` file with the VS Code REST Client extension to test:
 
 dotnet run
 
-
 ---
 
 ## Swagger UI
 
 Once running, open:
 
-http://localhost:5000/swagger
+http://localhost:5025/swagger
